@@ -14,12 +14,15 @@ stages:
         steps:
           - task: SonarQubePrepare@5
             inputs:
-             SonarQube: 'Sonarqube-test'
-             scannerMode: 'CLI'
-             configMode: 'manual'
-             cliProjectKey: 'Azure-pz-dev'
-             cliProjectName: 'Azure-pz-dev'
-             cliSources: '.'
+              SonarQube: 'Azure-pz-sc-auth'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'Azure-pz-dev'
+              cliProjectName: 'Azure-pz-dev'
+              extraProperties: |
+                sonar.sources=.
+                sonar.login=admin
+                sonar.token=sqp_09c8aac320c2e6b8c19f50c665c318eed39cb603
 
           - task: SonarQubeAnalyze@5
             inputs:
