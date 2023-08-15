@@ -22,7 +22,7 @@ stages:
         steps:
           - task: SonarQubePrepare@5
             inputs:
-              SonarQube: 'Azure-pz-sc'
+              SonarQube: 'Azure-pz-sc-auth'
               scannerMode: 'CLI'
               configMode: 'manual'
               cliProjectKey: 'Azure-pz-test'
