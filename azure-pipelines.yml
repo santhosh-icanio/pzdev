@@ -5,14 +5,6 @@ pool:
   vmImage: ubuntu-22.04
 
 stages:
-  - stage: Code_Checkout
-    displayName: 'Code Checkout'
-    jobs:
-      - job: CodeCheckout
-        displayName: 'CodeCheckout'
-        steps:
-          - checkout: self
-            displayName: Checkout code
 
   - stage: Code_Quality_Test 
     displayName: 'Code Quality Test'
@@ -37,3 +29,12 @@ stages:
             inputs:
               pollingTimeoutSec: '300'
             displayName: 'Publish SonarQube Analysis'
+
+# - task: SonarQubePrepare@5
+#   inputs:
+#     SonarQube: 'Azure-pz-sc'
+#     scannerMode: 'CLI'
+#     configMode: 'manual'
+#     cliProjectKey: 'Azure-pz-test'
+#     cliProjectName: 'Azure-pz-test'
+#     cliSources: '.'
