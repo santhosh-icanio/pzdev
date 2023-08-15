@@ -1,0 +1,62 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-22.04
+
+stages:
+  - stage: Code_Checkout
+    displayName: 'Code Checkout'
+    jobs:
+      - job: CodeCheckout
+        displayName: 'CodeCheckout'
+        steps:
+          - checkout: self
+            displayName: Checkout code
+
+  - stage: Code_Quality_Test 
+    displayName: 'Code Quality Test'
+    jobs:
+      - job: CodeQualityTest 
+        displayName: 'Code Quality Test'
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: 'Azure-pz-sc'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'Azure-pz-test'
+              cliProjectName: 'Azure-pz-test'
+              cliSources: '.'
+
+          - task: SonarQubeAnalyze@5
+            inputs:
+              jdkVersion: 'JAVA_HOME_11_X64'
+
+          - task: SonarQubePublish@5
+            inputs:
+              pollingTimeoutSec: '300'
+            displayName: 'Publish SonarQube Analysis'
+
+  - stage: Qualitygate
+    displayName: 'Qualitygate'
+    jobs:
+      - job: Qualitygate
+        displayName: 'Qualitygate'
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: 'Azure-pz-sc'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'Azure-pz-test'
+              cliProjectName: 'Azure-pz-test'
+              cliSources: '.'
+          - task: SonarQubePublish@5
+            inputs:
+              pollingTimeoutSec: '300'
