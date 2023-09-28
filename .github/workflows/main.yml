@@ -11,9 +11,8 @@ jobs:
         
       - name: Run Liquibase Update
         run: |
-          current_file_content=$(git diff-tree --name-only HEAD | awk 'NR>1')
           time=$(TZ=Asia/Kolkata date "+%Y.%m.%d-%H.%M.%S")
           cd /home/icanio-10094/propertyzar/env/liquibase
           git stash &&git pull 
-          echo "liquibase update --changelog-file=$current_file_content"
-          # liquibase tag --tag $time
+          echo "liquibase update --changelog-file=$(git diff-tree --name-only HEAD | awk 'NR>1')"
+          liquibase tag --tag $time
