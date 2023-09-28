@@ -1,30 +1,21 @@
 
-name: Run React App with PM2
 
-on:
-  push:
-    branches:
-      - liquibase
+name: Liquibase Update and Tag
+
+on: [push]
 
 jobs:
-  build:
-    runs-on: self-hosted # Use the appropriate label for your self-hosted runner
-
+  liquibase_update_and_tag:
+    runs-on: self-hosted
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Change Directory to React App
-        run: cd /home/icanio-10094/propertyzar/env/liquibase
-        
-      - name: Pull Latest Changes
-        run: git pull
-        
-      - name: Install Dependencies
-        run: liquibase update --changelog-file=Changelog.sql
-
-      - name: Delete Existing PM2 Process
-        run: liquibase tag --tag $(TZ=Asia/Kolkata date "+%Y.%m.%d-%H.%M.%S")
-
-
-
+      - name: Run Liquibase Update
+        run: |
+          time=$(TZ=Asia/Kolkata date "+%Y.%m.%d-%H.%M.%S")
+          cd /home/icanio-10094/propertyzar/env/liquibase
+          git stash &&git pull 
+          liquibase update --changelog-file=changelog.sql
+          liquibase tag --tag $time
+          # liquibase future-rollback-sql  --changelog-file=changelog.sql  --log-level=debug --output-file=rollback-$time.sql
