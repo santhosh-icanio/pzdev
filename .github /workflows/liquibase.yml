@@ -1,0 +1,24 @@
+name: Self-Hosted Runner Workflow
+
+on:
+  push:
+    branches:
+      - liquibase
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Liquibase
+        run: |
+          cd /home/icanio-10094/propertyzar/env/liquibase
+          liquibase update --changelog-file=Changelog.sql
+          liquibase tag --tag $(TZ=Asia/Kolkata date "+%Y.%m.%d-%H.%M.%S")
+
+
+
+      # Add your build and deployment steps here
+
