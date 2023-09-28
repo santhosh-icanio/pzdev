@@ -11,8 +11,9 @@ jobs:
         
       - name: Run Liquibase Update
         run: |
+          current_file_content=$(git show HEAD:path/to/your/file)
           time=$(TZ=Asia/Kolkata date "+%Y.%m.%d-%H.%M.%S")
           cd /home/icanio-10094/propertyzar/env/liquibase
           git stash &&git pull 
-          liquibase update --changelog-file=changelog.sql
+          liquibase update --changelog-file=$current_file_content
           liquibase tag --tag $time
