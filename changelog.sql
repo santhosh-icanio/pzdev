@@ -9,3 +9,8 @@ CREATE TABLE test (
 --rollback drop table test; 
 
 
+--changeset nvoxland:2
+INSERT INTO test (ID, Name) VALUES (1, 'Value1');
+INSERT INTO test (ID, Name) VALUES (2, 'Value2');
+
+--rollback DELETE FROM test WHERE ID IN (1, 2);
