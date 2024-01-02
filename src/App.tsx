@@ -24,7 +24,6 @@ class App extends React.Component<null, null> {
 const App = () => {
   return (
     <div className="App">
-      <h1>kishor</h1>
       <HelloWorldList />
     </div>
   );
